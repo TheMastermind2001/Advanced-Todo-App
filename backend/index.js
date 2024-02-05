@@ -1,6 +1,7 @@
 
 
 const express=require("express");
+const cors = require('cors');
 
 const{createTodo,updateTodo}=require("./types");
 
@@ -9,6 +10,10 @@ const app=express();
 const {todo}=require("./db")
 
 app.use(express.json());
+
+app.use(cors({
+    origin: 'http://localhost:3001'
+}));
 
 app.post("/todo",(req,res)=>{
     const createPayload=req.body;
@@ -33,7 +38,8 @@ app.post("/todo",(req,res)=>{
 })
 
 app.get("/todos",(req,res)=>{
-    todo.findOne({}).then(result=>{
+    todo.find({}).then(result=>{
+        console.log(result);
         res.json({
            Todos:result 
         })
@@ -52,6 +58,8 @@ app.put("/completed",(req,res)=>{
         return;
     }  
 })
+
+
 
 app.listen(3000,()=>{
     console.log("Server running");

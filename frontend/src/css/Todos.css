@@ -2,3 +2,28 @@
     margin:10px auto auto;
     
 } 
+
+
+.todo-list{
+    margin-top: 10%;
+  }
+  
+  .todo-list-element{
+    /* border-color: aliceblue; */
+    /* border-width: 10px; */
+    font-family: "Single Day";
+    /* margin-top: -40px; */
+    color: wheat;
+    display: grid;
+    grid-template-columns: 5% 20% 80%;
+    grid-gap: 10px;
+    border: 2px solid aliceblue;
+    /* justify-content: space-between; */
+  }
+  
+  .todo-list-element-item{
+    /* border: 2px solid white; White border for each item */
+    padding: 0px; /* Padding inside each cell */
+    /* background-color: #f0f0f0 */
+  }
+  
