@@ -1,7 +1,10 @@
 const mongoose=require("mongoose");
-const { Schema, boolean } = require("zod");
+// const { Schema, boolean } = require("zod");
 
-mongoose.connect("mongodb+srv://youtube:agniva2001@cluster0.vhyysbn.mongodb.net/test1");
+mongoose.connect("mongodb+srv://youtube:agniva2001@cluster0.vhyysbn.mongodb.net/test2");
+
+
+
 
 const todoSchema=mongoose.Schema({
     title:String,
@@ -9,6 +12,12 @@ const todoSchema=mongoose.Schema({
     completed: Boolean
 })
 
-const todo=mongoose.model('todos',todoSchema);
+const userSchema=mongoose.Schema({
+    username: String,
+    Todos: [todoSchema]
+})
 
-module.exports={todo};
+const todo=mongoose.model('todos',todoSchema);
+const user=mongoose.model('users',userSchema);
+
+module.exports={todo,user};
