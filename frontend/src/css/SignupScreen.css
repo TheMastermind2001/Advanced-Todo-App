@@ -1,0 +1,30 @@
+.signup-inputs{
+    max-width: 35%;
+    margin: 200px auto auto;
+    display: flex;
+    flex-direction:column;
+    gap: 30px;
+    justify-content: space-evenly;
+    
+}
+
+.signup-input{
+    border-radius: 40px;
+    font-family: "Single Day";
+    background-color:rgb(191, 194, 194);
+    padding: 5px;
+    padding-left: 10px;
+    font-size: x-large;
+}
+
+.signup-button{
+    cursor: pointer;
+    padding:3px;
+    width: 30%;
+    margin:10px auto auto;
+    border-radius: 10px;
+    border-color: rgb(215, 213, 213);
+    background-color: rgb(174, 175, 205);
+    font-family: "Single Day";
+    font-size: x-large;
+}

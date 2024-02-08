@@ -15,8 +15,8 @@ function CreateTodos({newTodo,val}) {
     fetch("http://localhost:3000/todo",{
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        // 'Content-Length' is usually calculated and set by the browser
+        "Content-Type": 'application/json',
+        "Authorization": "Bearer "+localStorage.getItem('token')
       },
       body: JSON.stringify({
         title:title,
