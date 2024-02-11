@@ -3,7 +3,8 @@
 const express=require("express");
 const cors = require('cors');
 const jwtsecret="secret";
-const{createTodo,updateTodo}=require("./types");
+const{createTodo,updateTodo,userZod}=require("./types");
+const zod=require("zod");
 
 const app=express();
 
@@ -16,6 +17,8 @@ const jwt=require("jsonwebtoken");
 app.use(cors({
     origin: 'http://localhost:3001'
 }));
+
+const bcrypt=require("bcrypt");
 
 app.post("/todo",(req,res)=>{
     console.log(req);
@@ -72,7 +75,7 @@ app.get("/todos",(req,res)=>{     //check if the jwt.verify was being done insid
     let token=req.headers.authorization;
     token=token.split(" ")[1];  //becuase it come like "Bearer .....token....."
     const payload=jwt.verify(token,jwtsecret);
-    console.log(payload);
+    console.log("Payload",payload);
     if(payload){
         user.findById(payload.id).then(result=>{
             console.log(result.Todos);
@@ -100,23 +103,69 @@ app.put("/completed",(req,res)=>{
     }  
 })
 
-app.post("/signup",(req,res)=>{    //dont forget to implement the middleware and zod
+app.post("/signup",async (req,res)=>{    //dont forget to implement the middleware and zod
     const username=req.body.username;
     const pwd=req.body.password;
-
-    user.create({
-        username:username,
-        Todos:[]
-    }).then((doc)=>{
-        token=jwt.sign({username: username, id: doc._id},jwtsecret);
-        res.json({
-            "token":token
-        })
-    }).catch();
+    const hashedpwd=await bcrypt.hash(pwd, 10);
+    const result=userZod.safeParse({username:username,password:pwd})
+    user.findOne({username:username}).then(user1=>{
+        // console.log(user);
+        if(user1){
+            console.log("User exists: ", user1);
+            return res.status(400).json({
+                msg: "Username already exists"
+            });
+        }
+        else{
+            user.create({
+                username:username,
+                password:hashedpwd,
+                Todos:[]
+            }).then((doc)=>{
+                token=jwt.sign({username: username, id: doc._id},jwtsecret);
+                res.json({
+                    "token":token
+                })
+            }).catch();
+        }
+    })
+    if(!result.success){
+        result.error.errors.forEach((error) => {
+            console.log(`${error.path[0]}: ${error.message}`);
+        });
+        return;
+    }
     
-    // res.json({
-    //     "token":token
-    // })
+
+})
+
+app.post("/signin",async (req,res)=>{    //dont forget to implement the middleware and zod
+    const username=req.body.username;
+    const pwd=req.body.password;
+    user.find({username:username}).then(async (docs)=>{
+        
+        let done=false;
+        for(let doc of docs){
+            if(done)break;
+            const match = await bcrypt.compare(pwd, doc.password);
+            if(match){
+                done=true;
+                res.json({
+                    "message": "Successfull Sign In"
+                })
+            }
+        }
+        if(!done){
+            res.status(401).json({
+                "message":"Wrong credentials"
+            })
+        }
+    }).catch(error=>{
+        res.status(500).json({
+            "message":"Server Error",
+            "Error":error.toString()
+        })
+    })
 
 })
 

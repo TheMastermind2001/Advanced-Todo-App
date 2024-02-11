@@ -5,17 +5,28 @@ import Todos from './components/Todos';
 import SignupScreen from './components/SignupScreen';
 import {BrowserRouter as Router,RouterProvider,Routes,Route, useNavigate, Navigate} from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
-
+import { UseSelector, useDispatch, useSelector } from 'react-redux';
+import { UseDispatch } from 'react-redux';
+import{login,logout} from './features/login/loginSlice';
+import loginSlice from './features/login/loginSlice';
+import {jwtDecode} from 'jwt-decode';
+import Logout from './components/Logout';
 function App() {
   // const navigate=useNavigate();
   const[newAdded,setNewAdded]=useState(0);
+  let user=useSelector(state=>state.login.user);
+  const dispatch=useDispatch();
   const[allTodos,setAllTodos]=useState([]);
   const[isloggedin,setisloggedin]=useState(0);
   useEffect(()=>{
     const token1 = localStorage.getItem('token');
+
     if(!token1){
+      user=null;
       console.log("No token");return;
     }
+    const info=jwtDecode(token1);   //might fail if the token in the localstorage is not valid. So use try catch
+    dispatch(login(info.username));
     fetch("http://localhost:3000/todos",
     { 
       method: "GET",
@@ -25,7 +36,7 @@ function App() {
         console.log("ERROR ERROR ERROR");
         throw new Error(`HTTP error! status: ${result.status}`);
       }
-      return result.json()
+      return result.json();
     })
     .then(data=>{
       console.log(data["Todos"]);
@@ -40,35 +51,41 @@ function App() {
   return (
     <Router>
     <div>
-
       <div className="main">
         <div className="main-screen">
           
-          <h1>Welcome to Agniva's Todo Master</h1>
           
+          <h1>{user?"Hi "+user+", ":""}Welcome to Agniva's Todo Master</h1>
+          
+          {/* <h2 color="white">{user}</h2> */}
           <Routes>
             <Route path="/" element={
+
                 <Navigate to={
-                  isloggedin?
+                  user?
                   "/todos":"/signup"}>
                 </Navigate>
               }></Route>
               
-            <Route path="signup" element={
+            <Route path="/signup" element={
                 <div className="notloggedin-screen">
-                  <SignupScreen></SignupScreen>
+                  <SignupScreen setisloggedin={setisloggedin}></SignupScreen>
                 </div>
               }>
             </Route>  
           
-            <Route path="todos" element={
-              <div className="loggedin-screen">
+            <Route path="/todos" element={
+              user?
+              (<div className="loggedin-screen">
+              <Logout></Logout>
               <CreateTodos newTodo={setNewAdded} val={newAdded}></CreateTodos>
               <Todos allTodos={allTodos}></Todos>
-              </div>
+              </div>): <Navigate to="/signup" />
             }>
 
             </Route>
+      
+            
           
           </Routes>
 

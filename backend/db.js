@@ -14,6 +14,7 @@ const todoSchema=mongoose.Schema({
 
 const userSchema=mongoose.Schema({
     username: String,
+    password: String,
     Todos: [todoSchema]
 })
 

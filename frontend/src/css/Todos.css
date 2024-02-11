@@ -9,6 +9,10 @@
   }
   
   .todo-list-element{
+    margin-top: 20px;
+    /* margin-left: 20px; */
+    padding-left: 50px;
+    /* margin-left: 20px; */
     /* border-color: aliceblue; */
     /* border-width: 10px; */
     font-family: "Single Day";
@@ -16,12 +20,14 @@
     color: wheat;
     display: grid;
     grid-template-columns: 5% 20% 80%;
-    grid-gap: 10px;
-    border: 2px solid aliceblue;
+    grid-gap: 20px;
+    border: 3px solid rgb(153, 152, 152);
+    border-radius: 20px;
     /* justify-content: space-between; */
   }
   
   .todo-list-element-item{
+    /* margin: 0px 20px 20px; */
     /* border: 2px solid white; White border for each item */
     padding: 0px; /* Padding inside each cell */
     /* background-color: #f0f0f0 */

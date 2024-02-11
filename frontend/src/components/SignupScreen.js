@@ -1,10 +1,21 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import "../css/SignupScreen.css"
+import { useNavigate } from 'react-router-dom';
 
-function SignupScreen() {
+import { UseDispatch, useDispatch, useSelector } from 'react-redux';
+import{login,logout} from '../features/login/loginSlice';
+import loginSlice from '../features/login/loginSlice';
+import jwtDecode from 'jwt-decode';
+import { useState } from 'react';
+
+function SignupScreen({setisloggedin}) {
+  const user=useSelector(state=>state.login.user);
+  const dispatch=useDispatch();
   const userref=useRef(null);
   const pwdref=useRef(null);
-  const handleClick=(e)=>{
+  const navigate=useNavigate();
+  const [errormsg,seterrormsg]=useState("");
+  const handleClick=()=>{
     const username=userref.current.value;
     const pwd=pwdref.current.value;
     console.log(username,pwd);
@@ -21,12 +32,30 @@ function SignupScreen() {
     }).then(response=>{
       return response.json();
     }).then(data=>{
+      if(data.msg){
+        seterrormsg(data.msg);
+      }
       console.log(data.token);
       localStorage.setItem('token',data.token);
+      setisloggedin(1);
+      dispatch(login(username));
+      navigate("/todos");
     }).catch((error)=>{
       console.log("Error occured",error);
     });
   }
+
+
+
+  useEffect(()=>{
+    window.addEventListener('click', ()=>{
+      seterrormsg("");
+    });
+  },[])
+
+  // const handleClick1=()=>{
+  //   navigate("/todos");
+  // }
 
   return (
     <div>
@@ -38,6 +67,9 @@ function SignupScreen() {
                 handleClick();
               }
             } className="signup-button">Sign Up</button>
+            <div className="errorMessage">
+              <h4>{errormsg}</h4>
+            </div>
         </div>
     </div>
   )
