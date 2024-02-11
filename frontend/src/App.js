@@ -46,7 +46,7 @@ function App() {
     .catch(error=>{
       console.log("Error fetching",error);
     });
-  },[newAdded])
+  },[newAdded,user])
 
   return (
     <Router>
@@ -56,8 +56,7 @@ function App() {
           
           
           <h1>{user?"Hi "+user+", ":""}Welcome to Agniva's Todo Master</h1>
-          
-          {/* <h2 color="white">{user}</h2> */}
+        
           <Routes>
             <Route path="/" element={
 
@@ -85,7 +84,7 @@ function App() {
 
             </Route>
       
-            
+            <Route path="*" element={<SignupScreen/>} />
           
           </Routes>
 

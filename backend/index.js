@@ -150,14 +150,15 @@ app.post("/signin",async (req,res)=>{    //dont forget to implement the middlewa
             const match = await bcrypt.compare(pwd, doc.password);
             if(match){
                 done=true;
+                token=jwt.sign({username: username, id: doc._id},jwtsecret);
                 res.json({
-                    "message": "Successfull Sign In"
+                    "token":token
                 })
             }
         }
         if(!done){
             res.status(401).json({
-                "message":"Wrong credentials"
+                "msg":"Wrong credentials"
             })
         }
     }).catch(error=>{
