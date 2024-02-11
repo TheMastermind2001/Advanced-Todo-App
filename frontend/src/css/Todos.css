@@ -1,17 +1,33 @@
 .todos-div{
-    margin:10px auto auto;
-    
+    /* margin:10px auto auto; */
+    position:absolute;
+    max-width: 70%;
+    /* width: 70%; */
+    left:0px;
+    right: 0px;
+    margin-bottom: 100px;
+    margin: auto;
+    padding-bottom: 100px;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* bottom: 200px; */
+    /* margin-bottom: 10%; */
+    /* left: auto; */
+    /* right: auto; */
+    /* margin: 0px auto auto; */
+    /* justify-content: center; */
 } 
 
 
 .todo-list{
-    margin-top: 10%;
+    margin-top: 0%;
   }
   
   .todo-list-element{
     margin-top: 20px;
     /* margin-left: 20px; */
-    padding-left: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
     /* margin-left: 20px; */
     /* border-color: aliceblue; */
     /* border-width: 10px; */
@@ -19,8 +35,8 @@
     /* margin-top: -40px; */
     color: wheat;
     display: grid;
-    grid-template-columns: 5% 20% 80%;
-    grid-gap: 20px;
+    grid-template-columns: 3% 17% 50% 15% 15%;
+    grid-gap: 2px;
     border: 3px solid rgb(153, 152, 152);
     border-radius: 20px;
     /* justify-content: space-between; */
@@ -31,5 +47,35 @@
     /* border: 2px solid white; White border for each item */
     padding: 0px; /* Padding inside each cell */
     /* background-color: #f0f0f0 */
+    margin:12px
   }
   
+
+  .todo-list-element>h1{
+    text-align: center;
+  }
+
+  .table-titles>h1{
+    text-align: center;
+  }
+  
+  
+  .table-titles{
+    margin-top: 30px;
+    /* margin-left: 20px; */
+    padding-left: 30px;
+    padding-right: 30px;
+    /* margin-left: 20px; */
+    /* border-color: aliceblue; */
+    /* border-width: 10px; */
+    font-family: "Single Day";
+    /* margin-top: -40px; */
+    color:  rgb(174, 175, 205);
+    display: grid;
+    grid-template-columns: 3% 17% 50% 15% 15%;
+    grid-gap: 2px;
+    /* border: 3px solid rgb(153, 152, 152); */
+    border-radius: 20px;
+    
+  }
+

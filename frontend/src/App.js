@@ -78,6 +78,7 @@ function App() {
               (<div className="loggedin-screen">
               <Logout></Logout>
               <CreateTodos newTodo={setNewAdded} val={newAdded}></CreateTodos>
+              {/* <div class="cool-line"></div> */}
               <Todos allTodos={allTodos}></Todos>
               </div>): <Navigate to="/signup" />
             }>

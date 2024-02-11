@@ -125,3 +125,14 @@ body{
 /* body{
   height: 1000px;
 } */
+.cool-line {
+  /* position: absolute; */
+  /* top:  */
+  position: relative;
+  width: 1000px;
+  height: 4px; /* Thickness of the line */
+  background: linear-gradient(to right, #0088ff, #ff00ff); /* Gradient effect */
+  border-radius: 2px; /* Rounded corners */
+  margin: 20px 0; /* Space above and below the line */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+}
