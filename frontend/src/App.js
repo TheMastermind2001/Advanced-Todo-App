@@ -14,7 +14,9 @@ import Logout from './components/Logout';
 function App() {
   // const navigate=useNavigate();
   const[newAdded,setNewAdded]=useState(0);
-  let user=useSelector(state=>state.login.user);
+  // let user=useSelector(state=>state.login.user);
+  const token1 = localStorage.getItem('token');
+  let user=(token1)?jwtDecode(token1)?.username:null;
   const dispatch=useDispatch();
   const[allTodos,setAllTodos]=useState([]);
   const[isloggedin,setisloggedin]=useState(0);
@@ -27,6 +29,7 @@ function App() {
     }
     const info=jwtDecode(token1);   //might fail if the token in the localstorage is not valid. So use try catch
     dispatch(login(info.username));
+    // user=info.username;
     fetch("http://localhost:3000/todos",
     { 
       method: "GET",
@@ -46,7 +49,7 @@ function App() {
     .catch(error=>{
       console.log("Error fetching",error);
     });
-  },[newAdded,user])
+  },[newAdded,user,dispatch])  
 
   return (
     <Router>
@@ -68,9 +71,8 @@ function App() {
               
             <Route path="/signup" element={
                 <div className="notloggedin-screen">
-                  <SignupScreen setisloggedin={setisloggedin}></SignupScreen>
-                </div>
-              }>
+                <SignupScreen setisloggedin={setisloggedin}></SignupScreen>
+              </div>}>
             </Route>  
           
             <Route path="/todos" element={
@@ -80,7 +82,7 @@ function App() {
               <CreateTodos newTodo={setNewAdded} val={newAdded}></CreateTodos>
               {/* <div class="cool-line"></div> */}
               <Todos allTodos={allTodos}></Todos>
-              </div>): <Navigate to="/signup" />
+              </div>): <Navigate to="/signup"/>
             }>
 
             </Route>
