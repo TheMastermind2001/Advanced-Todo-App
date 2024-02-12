@@ -14,7 +14,7 @@ import Logout from './components/Logout';
 function App() {
   // const navigate=useNavigate();
   const[newAdded,setNewAdded]=useState(0);
-  // let user=useSelector(state=>state.login.user);
+  let userstate=useSelector(state=>state.login.user);
   const token1 = localStorage.getItem('token');
   let user=(token1)?jwtDecode(token1)?.username:null;
   const dispatch=useDispatch();
@@ -78,7 +78,7 @@ function App() {
             </Route>  
           
             <Route path="/todos" element={
-              user?
+              userstate?
               (<div className="loggedin-screen">
               <Logout></Logout>
               <CreateTodos newTodo={setNewAdded} val={newAdded}></CreateTodos>
