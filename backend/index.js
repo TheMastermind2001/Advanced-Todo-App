@@ -21,19 +21,15 @@ app.use(cors({
 const bcrypt=require("bcrypt");
 
 app.post("/todo",(req,res)=>{
-    console.log(req);
     let token=req.headers.authorization;
-    console.log(token);
     token=(token?.split(" "))[1];  //becuase it come like "Bearer .....token....."
     const payload=jwt.verify(token,jwtsecret);
-    console.log(payload);
     if(!payload){
         res.json({
             "msg":"Error occured wrong token"
         })
     }
     const createPayload=req.body;
-    console.log(createPayload);
     const parsePayload=createTodo.safeParse(createPayload);
     if(!parsePayload.success){
         res.status(411).json({
@@ -45,13 +41,14 @@ app.post("/todo",(req,res)=>{
     
     todo.create({
         title: createPayload.title,
-        description: createPayload.description
+        description: createPayload.description,
+        completed:false
     }).then((todo)=>{
-        console.log(todo);
+        
         user.findById(payload.id).then(user=>{
-            console.log(user);
+            
             user.Todos.push(todo);
-            console.log(user);
+            
             user.save().then(()=>{
                 res.json({
                     "msg":"Done"
@@ -75,10 +72,10 @@ app.get("/todos",(req,res)=>{     //check if the jwt.verify was being done insid
     let token=req.headers.authorization;
     token=token.split(" ")[1];  //becuase it come like "Bearer .....token....."
     const payload=jwt.verify(token,jwtsecret);
-    console.log("Payload",payload);
+    
     if(payload){
         user.findById(payload.id).then(result=>{
-            console.log(result.Todos);
+            
             res.json({
                Todos: result.Todos 
             })
@@ -92,15 +89,55 @@ app.get("/todos",(req,res)=>{     //check if the jwt.verify was being done insid
     
 })
 
-app.put("/completed",(req,res)=>{
+app.put("/completed/:id",async (req,res)=>{
     const updatePayload=req.body;
-    const parsePayload=updateTodo.safeParse(updatePayload);
-    if(!parsePayload.success){
-        res.status(411).json({
-            msg:"Wrong input"
-        })
+    // const parsePayload=updateTodo.safeParse(updatePayload);
+    let token=req.headers.authorization;
+    token=token.split(" ")[1];
+    console.log(token);
+    const id=req.params.id;
+    const isCompleted=req.query.isCompleted;
+    const payload=jwt.verify(token,jwtsecret);
+    console.log("Payload",payload)
+    if(payload){
+        const user1=await user.findById(payload.id);
+        if(user1){
+            // const tododoc=await user1.Todos.findById(id);
+            console.log("Ids",id);
+            console.log("User",user1);
+            let tododoc=null;
+            for(let i=0;i<user1.Todos.length;i++){
+                console.log("All IDs",user1.Todos[i]._id.toString());
+                if(user1.Todos[i]._id.toString()===id){
+                    tododoc=user1.Todos[i];break;
+                }
+            }
+            if(tododoc){
+                tododoc.completed=isCompleted;
+                
+                user1.save().then(()=>{
+                    console.log("DONE");
+                    tododoc.save().then().catch();
+                    res.json({"msg":"Succesfull"});return;
+                    
+                })
+                .catch((error)=>{console.log("Error 3",error)});
+            }
+            else{
+                console.log("Error 4");
+                res.json({"msg":"No doc with this id exists"})
+                return;
+            }
+        }
+        else{
+            console.log("No user");
+            return res.json({"msg":"No such user exists"});
+        }
+    }
+    else{
+        res.json({"msg":"Wrong token"});
         return;
-    }  
+    }
 })
 
 app.post("/signup",async (req,res)=>{    //dont forget to implement the middleware and zod
@@ -111,7 +148,7 @@ app.post("/signup",async (req,res)=>{    //dont forget to implement the middlewa
     user.findOne({username:username}).then(user1=>{
         // console.log(user);
         if(user1){
-            console.log("User exists: ", user1);
+            
             return res.status(400).json({
                 msg: "Username already exists"
             });
@@ -170,6 +207,35 @@ app.post("/signin",async (req,res)=>{    //dont forget to implement the middlewa
 
 })
 
+
+app.delete("/delete/:id",async (req,res)=>{
+    const updatePayload=req.body;
+    // const parsePayload=updateTodo.safeParse(updatePayload);
+    let token=req.headers.authorization;
+
+    if(!token){
+        return res.json({"msg":"No Token found"});
+    }
+    token=token.split(" ")[1];
+    console.log(token);
+    const id=req.params.id;
+    const payload=jwt.verify(token,jwtsecret);
+    if(payload){
+        const user1=await user.findById(payload.id);
+        for(let i=0;i<user1.Todos.length;i++){
+            if(user1.Todos[i]._id.toString()===id){
+                user1.Todos.splice(i, 1); 
+                user1.save();
+                break;
+            }
+        }
+       
+    }
+    else{
+        console.log("Error 6");
+    }
+    
+});
 
 
 app.listen(3000,()=>{

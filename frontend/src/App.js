@@ -39,9 +39,11 @@ function App() {
         console.log("ERROR ERROR ERROR");
         throw new Error(`HTTP error! status: ${result.status}`);
       }
+      
       return result.json();
     })
     .then(data=>{
+      console.log("Results",data);
       console.log(data["Todos"]);
       // console.log(data);
       setAllTodos(data["Todos"])
@@ -49,7 +51,7 @@ function App() {
     .catch(error=>{
       console.log("Error fetching",error);
     });
-  },[newAdded,user,dispatch])  
+  },[newAdded,user,dispatch,allTodos])  
 
   return (
     <Router>
@@ -81,7 +83,7 @@ function App() {
               <Logout></Logout>
               <CreateTodos newTodo={setNewAdded} val={newAdded}></CreateTodos>
               {/* <div class="cool-line"></div> */}
-              <Todos allTodos={allTodos}></Todos>
+              <Todos allTodos={allTodos} setNewAdded={setNewAdded} val={newAdded}></Todos>
               </div>): <Navigate to="/signup"/>
             }>
 

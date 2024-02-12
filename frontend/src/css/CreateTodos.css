@@ -19,6 +19,10 @@
     font-size: x-large;
 }
 
+
+.create-todo-add-button:hover{
+    transform: scale(1.05);
+}
 .todo-input{
     background-color:rgb(191, 194, 194);
     padding: 5px;

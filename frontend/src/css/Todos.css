@@ -79,3 +79,144 @@
     
   }
 
+.delete-img{
+  color:wheat;
+  length: 30px;
+  width: 30px;
+  margin:auto;
+  background-color: rgb(250, 164, 168);
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.delete-img:hover{
+  /* border-color: black; */
+  border-width: 5px;
+  border: 2px solid transparent;
+}
+
+
+
+
+
+  .checkbox-wrapper-23 *,
+  .checkbox-wrapper-23 *:after,
+  .checkbox-wrapper-23 *:before {
+    box-sizing: border-box;
+  }
+
+  .checkbox-wrapper-23 input {
+    position: absolute;
+    opacity: 0;
+  }
+    
+  .checkbox-wrapper-23 input:checked + label svg path {
+    stroke-dashoffset: 0;
+  }
+    
+  .checkbox-wrapper-23 input:focus + label {
+    transform: scale(1.03);
+  }
+
+  .checkbox-wrapper-23 input + label {
+    display: block;
+    border: 2px solid #333;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+    
+  .checkbox-wrapper-23 input + label:active {
+    transform: scale(1.05);
+    border-radius: 12px;
+  }
+    
+  .checkbox-wrapper-23 input + label svg {
+    pointer-events: none;
+    padding: 5%;
+  }
+
+  .checkbox-wrapper-23 input + label svg path {      
+    fill: none;     
+    stroke: #333;
+    stroke-width: 4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 101;
+    transition: all 250ms cubic-bezier(1,0,.37,.91);
+  }
+
+
+  .todo-chekbox{
+    width: 30px;
+    height: 30px;
+    margin: auto; 
+  }
+
+  #check-23{
+    margin: auto;
+  }
+
+  
+
+.custom-checkbox{
+  margin: auto;
+}
+
+  /* Hide the default checkbox */
+.custom-checkbox input[type="checkbox"] {
+  visibility: hidden;
+  position: absolute;
+}
+
+/* Create a custom checkbox appearance */
+.custom-checkbox .checkmark {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color:  rgb(191, 194, 194);
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-checkbox:hover input[type="checkbox"] ~ .checkmark {
+  background-color: #8c8c8f;
+}
+
+/* When the checkbox is checked, change the background color */
+.custom-checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #3fcb2c;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.custom-checkbox input[type="checkbox"]:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.custom-checkbox .checkmark:after {
+  left: 11px;
+  top: 3px;
+  width: 5px;
+  height: 20px;
+  border: solid rgb(255, 255, 255);
+  border-width: 0 3.4px 3.4px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
